@@ -6,7 +6,7 @@
     <title>张先生语音包</title>
     <style>
         body { 
-            font-family: "Quicksand", "Microsoft YaHei", "ZCOOL KuaiLe", sans-serif;
+            font-family: "Quicksand", "Microsoft YaHei", sans-serif;
             padding: 20px; 
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
@@ -43,30 +43,24 @@
         #buttonContainer { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; /* 间距稍微缩小 */
+            gap: 10px; 
             width: 100%;
-            max-width: 700px; /* 整体容器宽度缩短 */
+            max-width: 700px;
             flex: 1;
         }
 
         .voice-btn {
             position: relative;
             overflow: hidden;
-            /* 1. 按钮长宽缩短：减小 padding */
-            padding: 15px 5px; 
-            
-            /* 2. 半透明背景 + 模糊效果 */
+            padding: 7px 5px; 
             background: rgba(255, 255, 255, 0.4); 
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            
-            /* 3. 字体微调：深灰色，加大号，更圆润 */
             color: #444; 
             font-size: 17px; 
             font-weight: 500;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px; 
-            
             cursor: pointer;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -86,7 +80,6 @@
             background: rgba(255, 255, 255, 0.7);
         }
 
-        /* 保留点击动画 */
         .ripple {
             position: absolute;
             background: rgba(255, 255, 255, 0.6); 
@@ -118,7 +111,7 @@
                 max-width: 90%;
             }
             .voice-btn {
-                padding: 15px 8px;
+                padding: 8px 8px;
                 font-size: 16px;
             }
         }
@@ -128,7 +121,7 @@
 
     <h2>张先生语音包</h2>
 
-    <div id="buttonContainer" class="loading">正在同步列表...</div>
+    <div id="buttonContainer" class="loading">加载中...</div>
 
     <footer>Version V1.02</footer>
 
@@ -162,18 +155,16 @@
                     const btn = document.createElement('button');
                     btn.className = 'voice-btn';
                     btn.innerText = item.name;
-                    
                     btn.addEventListener('click', (e) => {
                         createRipple(e);
                         audioPlayer.src = `./audio/${item.file}`;
                         audioPlayer.play().catch(e => {});
                     });
-
                     container.appendChild(btn);
                 });
             })
             .catch(err => {
-                container.innerText = '加载失败';
+                container.innerText = 'Error';
             });
     </script>
 </body>
