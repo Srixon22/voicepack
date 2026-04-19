@@ -6,9 +6,8 @@
     <title>张先生语音包</title>
     <style>
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: "Quicksand", "Microsoft YaHei", "ZCOOL KuaiLe", sans-serif;
             padding: 20px; 
-            /* 保留源代码的动态渐变背景 */
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
@@ -36,61 +35,61 @@
             gap: 10px;
         }
 
-        /* 模拟图片中的喇叭图标 */
         h2::before {
             content: "🔊"; 
             font-size: 1.1em;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
         }
 
-        /* 核心布局修改：固定每行4列的长方形排列 */
         #buttonContainer { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
-            gap: 12px; 
+            gap: 10px; /* 间距稍微缩小 */
             width: 100%;
-            max-width: 900px;
+            max-width: 700px; /* 整体容器宽度缩短 */
             flex: 1;
         }
 
-        /* 按钮样式修改：扁平长方形、纯白底、灰色文字 */
         .voice-btn {
             position: relative;
             overflow: hidden;
-            /* 增加上下内边距使按钮变长方形 */
-            padding: 22px 10px; 
-            background: #ffffff; 
+            /* 1. 按钮长宽缩短：减小 padding */
+            padding: 15px 5px; 
             
-            /* 灰色文字，不再加粗 */
-            color: #555; 
-            border: none;
-            border-radius: 10px; 
+            /* 2. 半透明背景 + 模糊效果 */
+            background: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            
+            /* 3. 字体微调：深灰色，加大号，更圆润 */
+            color: #444; 
+            font-size: 17px; 
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px; 
+            
             cursor: pointer;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
-            font-size: 15px;
-            font-weight: 400;
-            
             transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             -webkit-tap-highlight-color: transparent;
         }
 
         .voice-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
         .voice-btn:active {
-            transform: scale(0.95);
-            background: #f0f0f0;
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.7);
         }
 
-        /* 适配白色按钮的灰色波纹 */
+        /* 保留点击动画 */
         .ripple {
             position: absolute;
-            background: rgba(0, 0, 0, 0.1); 
+            background: rgba(255, 255, 255, 0.6); 
             border-radius: 50%;
             transform: scale(0);
             animation: ripple-effect 0.5s linear;
@@ -109,18 +108,18 @@
             padding: 15px;
             color: rgba(255, 255, 255, 0.9);
             font-size: 12px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .loading { color: white; grid-column: 1 / -1; text-align: center; }
 
-        /* 手机端适配：窄屏下改为每行2个，防止长方形太窄文字重叠 */
         @media (max-width: 600px) {
             #buttonContainer {
                 grid-template-columns: repeat(2, 1fr);
+                max-width: 90%;
             }
             .voice-btn {
-                padding: 18px 10px;
+                padding: 15px 8px;
+                font-size: 16px;
             }
         }
     </style>
