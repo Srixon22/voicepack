@@ -5,72 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>张先生语音包</title>
     <style>
-        :root { --primary: #6366f1; --bg: #f8fafc; }
         body { 
-            font-family: -apple-system, sans-serif; 
-            background: var(--bg); 
+            font-family: sans-serif; 
             padding: 20px; 
+            background: #f4f4f9; 
             display: flex; 
             flex-direction: column; 
             align-items: center;
             min-height: 100vh;
             margin: 0;
         }
-        h1 { color: #1e293b; margin-bottom: 25px; font-size: 1.5rem; }
-        #container { 
+        h2 { color: #333; margin-bottom: 20px; }
+        #buttonContainer { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-            gap: 12px; width: 100%; max-width: 600px; 
-            flex: 1; 
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+            gap: 10px; 
+            width: 100%;
+            max-width: 800px;
+            flex: 1;
         }
-        .v-btn {
-            background: white; border: 1px solid #e2e8f0; border-radius: 12px;
-            padding: 20px 10px; font-size: 15px; color: #334155; font-weight: 500;
-            cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            -webkit-tap-highlight-color: transparent;
+        .voice-btn {
+            padding: 15px 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 14px;
         }
-        .v-btn:active { transform: scale(0.95); background: var(--primary); color: white; border-color: var(--primary); }
-        
+        .voice-btn:hover { background: #0056b3; }
+        .voice-btn:active { background: #004085; transform: scale(0.95); }
         footer {
-            margin-top: 30px;
-            padding: 20px;
-            color: #94a3b8;
+            margin-top: 20px;
+            padding: 15px;
+            color: #888;
             font-size: 12px;
-            letter-spacing: 1px;
         }
-        .loading { color: #94a3b8; font-size: 14px; text-align: center; width: 100%; }
+        .loading { color: #888; grid-column: 1 / -1; text-align: center; }
     </style>
 </head>
 <body>
-    <h1>🔊 张先生语音包</h1>
-    
-    <div id="container" class="loading"></div>
+
+    <h2>张先生语音包</h2>
+
+    <div id="buttonContainer" class="loading">加载中...</div>
 
     <footer>Version V1.02</footer>
 
     <script>
-        const container = document.getElementById('container');
-        const audioInstance = new Audio();
+        const container = document.getElementById('buttonContainer');
+        const audioPlayer = new Audio();
 
         fetch('./list.json')
             .then(res => res.json())
             .then(data => {
                 container.innerHTML = '';
                 container.classList.remove('loading');
-                data.forEach(item => {
-                    const btn = document.createElement('button');
-                    btn.className = 'v-btn';
-                    btn.innerText = item.name;
-                    btn.onclick = () => {
-                        audioInstance.src = `./audio/${item.file}`;
-                        audioInstance.play().catch(e => console.error("播放失败:", e));
-                    };
-                    container.appendChild(btn);
-                });
-            })
-            .catch(err => {
-                container.innerText = '列表加载失败，请检查配置文件';
-            });
-    </script>
-</body>
-</html>
+                data.forEach
