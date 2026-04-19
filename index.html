@@ -6,128 +6,160 @@
     <title>张先生语音包</title>
     <style>
         body { 
-            font-family: -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             padding: 20px; 
-            background: linear-gradient(180deg, #b3d9ff 0%, #ffffff 100%);
+            background: #ffffff; 
             display: flex; 
             flex-direction: column; 
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* 星星掉落动画 */
-        .star {
-            position: absolute;
-            top: -10px;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px white;
-            animation: fall linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) translateX(50px);
-                opacity: 0;
-            }
         }
 
         h2 { 
-            color: #4682B4; 
-            margin-bottom: 25px; 
-            z-index: 10;
-            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+            color: #333; 
+            margin-top: 30px;
+            margin-bottom: 30px; 
+            letter-spacing: 1px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2::before {
+            content: "🔊"; 
+            font-size: 1.2em;
         }
 
         #buttonContainer { 
             display: grid; 
-            grid-template-columns: 1fr; /* 强制单列，实现长方形横向排列 */
-            gap: 12px; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px; 
             width: 100%;
-            max-width: 400px;
+            max-width: 900px; 
             flex: 1;
-            z-index: 10;
+            padding: 10px;
         }
 
         .voice-btn {
             position: relative;
             overflow: hidden;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.7);
-            color: #333;
-            border: 1px solid #add8e6;
-            border-radius: 8px; /* 较小的圆角，更像标准长方形 */
+            padding: 25px 15px; 
+            background: #ffffff; 
+            color: #555; 
+            border: 1px solid #eee; 
+            border-radius: 12px; 
             cursor: pointer;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 15px; 
+            font-weight: 400; 
+            transition: all 0.2s ease; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05); 
             -webkit-tap-highlight-color: transparent;
         }
 
+        .voice-btn:hover {
+            background: #fafafa; 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
         .voice-btn:active {
-            transform: scale(0.98);
-            background: #e6f3ff;
-            border-color: #007bff;
+            transform: scale(0.96); 
+            background: #f0f0f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.1); 
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-effect 0.4s linear; 
+            pointer-events: none;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
         footer {
-            margin-top: 30px;
-            padding: 15px;
-            color: #88a0b9;
+            margin-top: 40px;
+            padding: 20px;
+            color: #aaa;
             font-size: 12px;
-            z-index: 10;
         }
 
-        .loading { color: #88a0b9; text-align: center; }
+        .loading { color: #888; grid-column: 1 / -1; text-align: center; font-size: 14px;}
+        
+        @media (max-width: 600px) {
+            #buttonContainer {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .voice-btn {
+                padding: 20px 10px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <h2>张先生语音包</h2>
 
-    <div id="buttonContainer" class="loading">正在同步列表...</div>
+    <div id="buttonContainer" class="loading">正在加载语音列表...</div>
 
     <footer>Version V1.02</footer>
 
     <script>
-        // 生成随机掉落的星星
-        function createStars() {
-            for (let i = 0; i < 20; i++) {
-                let star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                star.style.animationDelay = Math.random() * 5 + 's';
-                document.body.appendChild(star);
-            }
-        }
-        createStars();
-
         const container = document.getElementById('buttonContainer');
         const audioPlayer = new Audio();
+
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            const rect = button.getBoundingClientRect();
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+
+            const oldRipple = button.getElementsByClassName("ripple")[0];
+            if (oldRipple) { oldRipple.remove(); }
+            
+            button.appendChild(circle);
+        }
 
         fetch('./list.json')
             .then(res => res.json())
             .then(data => {
+                if (data.length === 0) {
+                    container.innerText = '列表为空';
+                    return;
+                }
                 container.innerHTML = '';
                 container.classList.remove('loading');
+                
                 data.forEach(item => {
                     const btn = document.createElement('button');
                     btn.className = 'voice-btn';
                     btn.innerText = item.name;
                     
-                    btn.onclick = () => {
+                    btn.addEventListener('click', (e) => {
+                        createRipple(e);
                         audioPlayer.src = `./audio/${item.file}`;
                         audioPlayer.play().catch(e => {});
-                    };
+                    });
 
                     container.appendChild(btn);
                 });
