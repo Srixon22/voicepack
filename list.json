@@ -1,5 +1,12 @@
 [
+  { "name": "不上哥", "file": "不上哥.mp3" },
   { "name": "嘎嘎", "file": "嘎嘎.mp3" },
-  { "name": "超级欢呼", "file": "cheer.wav" },
-  { "name": "点个赞", "file": "like.mp3" }
+  { "name": "天哥", "file": "天哥.mp3" },
+  { "name": "得吃得吃", "file": "得吃得吃.mp3" },
+  { "name": "我天", "file": "我天.mp3" },
+  { "name": "百万撤离了", "file": "百万撤离了.mp3" },
+  { "name": "美汁汁", "file": "美汁汁.mp3" },
+  { "name": "臭逼", "file": "臭逼.mp3" },
+  { "name": "舞萌来", "file": "舞萌来.mp3" },
+  { "name": "馋死你", "file": "馋死你.mp3" }
 ]
