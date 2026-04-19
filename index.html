@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的云端语音包</title>
+    <style>
+        :root { --primary: #6366f1; --bg: #f8fafc; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #1e293b; margin-bottom: 25px; font-size: 1.5rem; }
+        #container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 12px; width: 100%; max-width: 600px; 
+        }
+        .v-btn {
+            background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+            padding: 20px 10px; font-size: 15px; color: #334155; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .v-btn:active { transform: scale(0.95); background: var(--primary); color: white; border-color: var(--primary); }
+        .loading { color: #94a3b8; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <h1>🔊 我的语音包控制台</h1>
+    <div id="container" class="loading">正在加载语音列表...</div>
+
+    <script>
+        const container = document.getElementById('container');
+        const audioInstance = new Audio(); // 复用同一个播放实例，防止多重声音重叠
+
+        // 核心：读取清单并生成按钮
+        fetch('./list.json')
+            .then(res => res.json())
+            .then(data => {
+                container.innerHTML = '';
+                data.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'v-btn';
+                    btn.innerText = item.name;
+                    btn.onclick = () => {
+                        audioInstance.src = `./audio/${item.file}`;
+                        audioInstance.play().catch(e => console.log("播放失败:", e));
+                    };
+                    container.appendChild(btn);
+                });
+            })
+            .catch(err => {
+                container.innerText = '加载失败，请检查 list.json';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
